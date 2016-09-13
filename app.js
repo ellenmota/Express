@@ -1,6 +1,6 @@
 var express = require('express');
 var app = express();
-
+var birds = require('./birds.js');
 /*
 Métodos:
         Get =>
@@ -66,7 +66,57 @@ app.get(/.*fly$/,function(req,res){
   res.send('.*fly$');
 });
 
-//
+//Mais de uma função para uma rota (comportamento de Middleware)
+app.get('/teste/b',function(req,res,next){
+  //res.send('Oláa');
+  next();
+}, function(req,res){
+  res.send('Hello!');
+});
+
+//Utilizando um array
+var k = function(req,res,next){
+  console.log('rota k');
+  next();
+}
+
+var oi = function(req,res,next){
+  console.log('rota oi');
+  next();
+}
+var lol = function(req,res){
+  res.send('Iee');
+}
+
+app.get('/koko',[k,oi,lol]);
+
+//Métodos de Resposta:
+/*
+res.download()
+res.end()
+res.json()
+res.jsonp()
+res.redirect()
+res.render()
+res.send()
+res.sendFile()
+res.sendStatus()
+*/
+
+//Manipulação de Rotas => route
+app.route('/book')
+    .get(function(req,res){
+      res.send('Com get');
+    })
+    .post(function(req,res){
+      res.send('Com post');
+    })
+    .put(function(req,res){
+      res.send('Com put');
+    });
+
+
+app.use('/birds',birds);
 
 app.listen(3000, function() {
   console.log('Listening on port 3000');
