@@ -51,6 +51,9 @@ app.get('user/:id', function (req, res, next){
   res.render('special');
 });
 
+
+
+
 app.listen(3000, function (){
   console.log('Test Middleware...');
 });
