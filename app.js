@@ -106,7 +106,7 @@ res.sendStatus()
 //Manipulação de Rotas => route
 app.route('/book')
     .get(function(req,res){
-      res.send('Com get');
+      res.send('Com get');ç
     })
     .post(function(req,res){
       res.send('Com post');

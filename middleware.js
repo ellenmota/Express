@@ -11,31 +11,31 @@ app.use(function (req,res,next){
 //   next();
 // });
 
-app.get('/user/:id',function (req,res,next){
-  // console.log(req);
-  res.send('User');
-});
-
-//Middleware com varias funções
-app.get('/user/:id',function (req,res,next){
-  console.log('Requisição: ', req.originalURL);
-  next();
-}, function(req,res,next){
-    console.log('Request: ');
-    next();
-});
-
-//Varios caminhos para a mesma rota
-app.get('/user/:id', function (req, res, next){
-  console.log('Requisição user: ', req.params.id);
-  next();
-}, function (req, res, next){
-  res.send('User info.');
-});
-
-app.get('/user/:id', function (req, res, next){
-  res.end(req.params.id);
-});
+// app.get('/user/:id',function (req,res,next){
+//   // console.log(req);
+//   res.send('User');
+// });
+//
+// //Middleware com varias funções
+// app.get('/user/:id',function (req,res,next){
+//   console.log('Requisição: ', req.originalURL);
+//   next();
+// }, function(req,res,next){
+//     console.log('Request: ');
+//     next();
+// });
+//
+// //Varios caminhos para a mesma rota
+// app.get('/user/:id', function (req, res, next){
+//   console.log('Requisição user: ', req.params.id);
+//   next();
+// }, function (req, res, next){
+//   res.send('User info.');
+// });
+//
+// app.get('/user/:id', function (req, res, next){
+//   res.end(req.params.id);
+// });
 
 //rotas condicionais com rotas
 app.get('/user/:id',function (req,res,next){
@@ -44,12 +44,12 @@ app.get('/user/:id',function (req,res,next){
   else
     next();
 }, function (req,res,next) {
-    res.render('regular');
+    res.render('user', {id: req.params.id});
 });
 
-app.get('user/:id', function (req, res, next){
-  res.render('special');
-});
+// app.get('user/:id', function (req, res, next){
+//   res.render('special');
+// });
 
 //Manipulação de Erro
 app.use(function(err,req,res,next){
@@ -70,8 +70,6 @@ function erros(err,req,res,next){
   console.error(err.stack);
   next(err);
 }
-
-
 
 //Porta
 app.listen(3000, function (){
