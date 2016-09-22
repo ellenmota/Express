@@ -1,5 +1,8 @@
 var express =  require('express');
 var app = express();
+var bodyparser = require('body-parser');
+
+//Para debugar usar o comando: set DEBUG=express:* & node index.js
 
 app.use(function (req,res,next){
   console.log('Time: ',Date.now());
@@ -70,6 +73,31 @@ function erros(err,req,res,next){
   console.error(err.stack);
   next(err);
 }
+
+function erro (err,req,res,next){
+  if(req.xhr){
+    res.status(500).send({error:"Falhou!"});
+    console.log('Falhou!');
+  }
+  else{
+    next(err);
+  }
+}
+
+app.use(bodyparser());
+app.use(erros());
+//Usar middleware de manipulação de erros depois de todos os use
+
+
+//Para uso de Proxys
+app.set('test proxy',function(ip){
+  if(ip ==='127.0.0.1' || ip==='127.3.3.3'){
+    return true;
+  }
+  else{
+    return false;
+  }
+});
 
 //Porta
 app.listen(3000, function (){
