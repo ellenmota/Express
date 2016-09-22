@@ -1,7 +1,9 @@
 var express =  require('express');
 var app = express();
 var bodyparser = require('body-parser');
-
+// var cassandra = require('cassandra-driver');
+// var client = new cassandra.Client({ contactPoints: ['localhost']});
+var MongoClient = require('mongodb').mongoClient;
 //Para debugar usar o comando: set DEBUG=express:* & node index.js
 
 app.use(function (req,res,next){
@@ -84,19 +86,38 @@ function erro (err,req,res,next){
   }
 }
 
-app.use(bodyparser());
-app.use(erros());
+// app.use(bodyparser());
+// app.use(erros());
 //Usar middleware de manipulação de erros depois de todos os use
 
 
 //Para uso de Proxys
 app.set('test proxy',function(ip){
-  if(ip ==='127.0.0.1' || ip==='127.3.3.3'){
+  if(ip === '127.0.0.1' || ip ==='127.3.3.3'){
     return true;
   }
   else{
     return false;
   }
+});
+
+//Conexão com BD - cassandra
+// client.execute('Select key from system.local',function(err,result){
+//   if (err) throw err;
+//   console.log(result.rows[0]);
+// });
+
+//Conexão com BD - mongodb
+MongoClient.connect('mongodb://localhost:27017/animals', function(err, db) {
+  if (err) {
+    throw err;
+  }
+  db.collection('mammals').find().toArray(function(err, result) {
+    if (err) {
+      throw err;
+    }
+    console.log(result);
+  });
 });
 
 //Porta
