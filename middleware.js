@@ -1,10 +1,13 @@
 var express =  require('express');
 var app = express();
-var bodyparser = require('body-parser');
+var bodyParser = require('body-parser');
 // var cassandra = require('cassandra-driver');
 // var client = new cassandra.Client({ contactPoints: ['localhost']});
 var MongoClient = require('mongodb').mongoClient;
 //Para debugar usar o comando: set DEBUG=express:* & node index.js
+var mongoose = require('./connectMongoose');
+
+
 
 app.use(function (req,res,next){
   console.log('Time: ',Date.now());
@@ -43,14 +46,14 @@ app.use(function (req,res,next){
 // });
 
 //rotas condicionais com rotas
-app.get('/user/:id',function (req,res,next){
-  if(req.params.id == 0)
-    next('route');
-  else
-    next();
-}, function (req,res,next) {
-    res.render('user', {id: req.params.id});
-});
+// app.get('/user/:id',function (req,res,next){
+//   if(req.params.id == 0)
+//     next('route');
+//   else
+//     next();
+// }, function (req,res,next) {
+//     res.render('user', {id: req.params.id});
+// });
 
 // app.get('user/:id', function (req, res, next){
 //   res.render('special');
@@ -108,17 +111,34 @@ app.set('test proxy',function(ip){
 // });
 
 //Conexão com BD - mongodb
-MongoClient.connect('mongodb://localhost:27017/animals', function(err, db) {
-  if (err) {
-    throw err;
-  }
-  db.collection('mammals').find().toArray(function(err, result) {
-    if (err) {
-      throw err;
-    }
-    console.log(result);
-  });
+app.use(bodyParser.urlencoded({ extended: false }));
+
+// parse application/json
+app.use(bodyParser.json());
+
+//Método post cria!
+app.post('/user',function(req,res){
+  res.render('user',req.body);
+  console.log(req.body);
+  // console.log(req.params.id, req.params.name, req.params.password);
+
+  // var usuario = new user({ id: $req.params.id, name:$req.params.name, password: req.params.password});
+  // usuario.save(function (err) {
+  //   if (err) {
+  //     console.log(err);
+  //   } else {
+  //   console.log('Sucesso! Atributos preenchidos!');
+  //   }
+  // });
+  //
+  // next();
+
 });
+
+
+
+
+
 
 //Porta
 app.listen(3000, function (){
