@@ -5,7 +5,7 @@ var bodyParser = require('body-parser');
 // var client = new cassandra.Client({ contactPoints: ['localhost']});
 var MongoClient = require('mongodb').mongoClient;
 //Para debugar usar o comando: set DEBUG=express:* & node index.js
-var mongoose = require('./connectMongoose');
+var user = require('./connectMongoose');
 
 
 
@@ -118,27 +118,35 @@ app.use(bodyParser.json());
 
 //Método post cria!
 app.post('/user',function(req,res){
-  res.render('user',req.body);
+  //res.render('user',req.body);
   console.log(req.body);
-  // console.log(req.params.id, req.params.name, req.params.password);
 
-  // var usuario = new user({ id: $req.params.id, name:$req.params.name, password: req.params.password});
-  // usuario.save(function (err) {
-  //   if (err) {
-  //     console.log(err);
-  //   } else {
-  //   console.log('Sucesso! Atributos preenchidos!');
-  //   }
-  // });
-  //
-  // next();
+  var usuario = new user(req.body);
+  usuario.save(function (err) {
+  if (err) {
+    console.log(err);
+  } else {
+      console.log('Sucesso! Atributos preenchidos!');
+    }
+  });
+
+  res.send('Ok');
 
 });
 
+//Método put = alteração
+app.put('/user/:id',function(req,res){
+  var query = {name:'Ellen2333'};
+user.findOneAndUpdate(query, { $set: { name: 'maoii' }});
+  res.send('Ok');
+});
+//Método delete
+app.delete('/user/:id',function(req,res){
 
+  user.find({_id:req.params.id}).remove().exec();
 
-
-
+  res.send('Excluido com sucesso!');
+});
 
 //Porta
 app.listen(3000, function (){
