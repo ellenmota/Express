@@ -1,13 +1,6 @@
 var express = require('express');
 var app = express();
 var birds = require('./birds.js');
-/*
-Métodos:
-        Get =>
-        Post =>
-        Put =>
-        Delete =>
-*/
 
 app.get('/',function(req,res){
   res.send('Olá fdp!');

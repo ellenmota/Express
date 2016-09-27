@@ -1,7 +1,8 @@
 var mongoose =  require('mongoose');
 //Mongoose
-mongoose.connect('mongodb://localhost/test');
+mongoose.connect('mongodb://localhost/Ellen');
 
-var user = mongoose.model('Cat2', {name: String, password: String });
+//objeto                   //nomedatabela //Atributos
+var user = mongoose.model('User', {name: String, password: String });
 
 module.exports = user;
